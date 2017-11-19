@@ -6,16 +6,17 @@
   if(isset($_POST['add_userAdmin']))
   {
     $userID = $_POST['add_txtUserID'];
-    $password = $_POST['add_txtPassword'];
+    $password = md5($_POST['add_txtPassword']);
     $lastName = $_POST['add_txtLastName'];
     $firstName = $_POST['add_txtFirstName'];
     $middleInitial = $_POST['add_txtMiddleInitial'];
+    $expDate = 'date_sub(date(now()), INTERVAL -1 MONTH)';
     $userType = 'ADMINISTRATOR';
     $status = 'ACTIVE';
 
     //query for adding new record in tblUsers
-    $queryAddUserAdmin = "INSERT INTO tblUsers(user_id, last_name, first_name, middle_initial, user_type, status)
-                          VALUES(upper('$userID'), upper('$lastName'), upper('$firstName'), upper('$middleInitial'), '$userType', '$status')";
+    $queryAddUserAdmin = "INSERT INTO tblUsers(user_id, last_name, first_name, middle_initial, exp_date, user_type, status)
+                          VALUES(upper('$userID'), upper('$lastName'), upper('$firstName'), upper('$middleInitial'), $expDate, '$userType', '$status')";
 
     //query for adding new record in tblPasswords
     $queryAddUserPassword = "INSERT INTO tblPasswords(user_id, password) VALUES(upper('$userID'), '$password')";
@@ -47,6 +48,17 @@
 
   //fetching of result of queryUserResult
   $rowLoggedUser = mysqli_fetch_assoc($queryLoggedUserResult);
+
+  function AutoGenerateAdminID() { 
+
+            $s = strtoupper(md5(uniqid(rand(),true)));
+ 
+            $guidText = str_pad('A',8,substr($s,0,9));
+     
+            return $guidText;
+        }
+        // End Generate Guid 
+        $Guid = AutoGenerateAdminID();
 ?>
 
 <!DOCTYPE html>
@@ -249,7 +261,7 @@ function alphaOnly(e) {
                         <tr>
                             <td>User ID</td>
                             <td> 
-                              <input type="text" name="add_txtUserID" class="form-control" required="" style="text-transform: uppercase;">
+                              <input type="text" name="add_txtUserID" class="form-control" required="" style="text-transform: uppercase;" value="<?php echo $Guid; ?>" readonly="readonly">
                             </td>
                         </tr>
                         <tr>
@@ -337,7 +349,7 @@ function alphaOnly(e) {
                 <td><?php echo $rowAdmins['last_name']; ?></td>
                 <td><?php echo $rowAdmins['first_name']; ?></td>
                 <td><?php echo $rowAdmins['middle_initial']; ?></td>
-                <td></td>
+                <td><?php echo $rowAdmins['exp_date']?></td>
                 <td>
                   <a href="admin_users_editAdmin.php?user_id=<?php echo $rowAdmins['user_id']?>" class="btn btn-sm btn-warning">Edit</a>
                   <a href="admin_users_deactivateAdmin.php?user_id=<?php echo $rowAdmins['user_id']?>" class="btn btn-sm btn-danger">Deactivate</a>

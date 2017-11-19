@@ -4,16 +4,17 @@
   if(isset($_POST['add_userStudent']))
   {
     $userID = $_POST['add_txtUserID'];
-    $password = $_POST['add_txtPassword'];
+    $password = md5($_POST['add_txtPassword']);
     $lastName = $_POST['add_txtLastName'];
     $firstName = $_POST['add_txtFirstName'];
     $middleInitial = $_POST['add_txtMiddleInitial'];
+    $expDate = 'date_sub(date(now()), INTERVAL -1 MONTH)';
     $userType = 'STUDENT';
     $status = 'ACTIVE';
 
     //query for adding new record in tblUsers
-    $queryAddUserStudent = "INSERT INTO tblUsers(user_id, last_name, first_name, middle_initial, user_type, status)
-                          VALUES(upper('$userID'), upper('$lastName'), upper('$firstName'), upper('$middleInitial'), '$userType', '$status')";
+    $queryAddUserStudent = "INSERT INTO tblUsers(user_id, last_name, first_name, middle_initial, exp_date, user_type, status)
+                          VALUES(upper('$userID'), upper('$lastName'), upper('$firstName'), upper('$middleInitial'), $expDate,'$userType', '$status')";
 
     //query for adding new record in tblPasswords
     $queryAddUserStudentPassword = "INSERT INTO tblPasswords(user_id, password) VALUES(upper('$userID'), '$password')";
@@ -323,6 +324,7 @@ function alphaOnly(e) {
                 <td><?php echo $rowStudents['last_name']; ?></td>
                 <td><?php echo $rowStudents['first_name']; ?></td>
                 <td><?php echo $rowStudents['middle_initial']; ?></td>
+                <td><?php echo $rowStudents['exp_date']?></td>
                 <td>
                   <a href="admin_users_editStudent.php?user_id=<?php echo$rowStudents['user_id']?>" class="btn btn-sm btn-warning">EDIT</a>
                   <a href="admin_users_deactivateStudent.php?user_id=<?php echo$rowStudents['user_id']?>" class="btn btn-sm btn-danger">DEACTIVATE</a>

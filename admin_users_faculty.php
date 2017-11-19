@@ -4,16 +4,17 @@
   if(isset($_POST['add_userFaculty']))
   {
     $userID = $_POST['add_txtUserID'];
-    $password = $_POST['add_txtPassword'];
+    $password = md5($_POST['add_txtPassword']);
     $lastName = $_POST['add_txtLastName'];
     $firstName = $_POST['add_txtFirstName'];
     $middleInitial = $_POST['add_txtMiddleInitial'];
+    $expDate = 'date_sub(date(now()), INTERVAL -1 MONTH)';
     $userType = 'FACULTY';
     $status = 'ACTIVE';
 
     //query for adding new record in tblUsers
-    $queryAddUserFaculty = "INSERT INTO tblUsers(user_id, last_name, first_name, middle_initial, user_type, status)
-                          VALUES(upper('$userID'), upper('$lastName'), upper('$firstName'), upper('$middleInitial'), '$userType', '$status')";
+    $queryAddUserFaculty = "INSERT INTO tblUsers(user_id, last_name, first_name, middle_initial, exp_date, user_type, status)
+                          VALUES(upper('$userID'), upper('$lastName'), upper('$firstName'), upper('$middleInitial'), $expDate, '$userType', '$status')";
 
     //query for adding new record in tblPasswords
     $queryAddUserFacultyPassword = "INSERT INTO tblPasswords(user_id, password) VALUES(upper('$userID'), '$password')";
@@ -48,6 +49,17 @@
   //preparation of session ID for next landing page
 
   $_SESSION['user_id'] = $userID;
+
+  function AutoGenerateFacultyID() { 
+
+            $s = strtoupper(md5(uniqid(rand(),true)));
+ 
+            $guidText = str_pad('F',8,substr($s,0,9));
+     
+            return $guidText;
+        }
+        // End Generate Guid 
+        $Guid = AutoGenerateFacultyID();
 ?>
 
 <!DOCTYPE html>
@@ -233,7 +245,7 @@ function alphaOnly(e) {
                         <tr>
                             <td>User ID</td>
                             <td> 
-                              <input type="text" name="add_txtUserID" class="form-control" required="" style="text-transform: uppercase;">
+                              <input type="text" name="add_txtUserID" class="form-control" required="" style="text-transform: uppercase;" value="<?php echo $Guid?>" readonly="readonly">
                             </td>
                         </tr>
                         <tr>

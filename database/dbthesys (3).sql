@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 19, 2017 at 10:13 PM
+-- Generation Time: Nov 20, 2017 at 12:39 AM
 -- Server version: 10.1.28-MariaDB
 -- PHP Version: 7.1.10
 
@@ -106,9 +106,9 @@ CREATE TABLE `tblpasswords` (
 --
 
 INSERT INTO `tblpasswords` (`id`, `user_id`, `password`) VALUES
-(1, 'K5140047', 'abc1603cf900aa00be033261113d7f15'),
+(1, 'K5140047', 'ABC1603CF900AA00BE033261113D7F15'),
 (2, 'K1120945', 'cabusora'),
-(3, 'K1120123', '7ab248fa18dabe271ea3c6fd84364de1'),
+(3, 'K1120123', '156026b915cc509747f78f749fdd0005'),
 (4, 'K5140030', '08c8e38aa599ecf518ad75933f2189ea'),
 (5, 'K1123456', 'ewan'),
 (6, 'K1189012', 'temp'),
@@ -116,7 +116,11 @@ INSERT INTO `tblpasswords` (`id`, `user_id`, `password`) VALUES
 (9, 'V1234567', '3d801aa532c1cec3ee82d87a99fdf63f'),
 (10, 'V2345678', 'temp'),
 (11, 'K1198765', 'df8fede7ff71608e24a5576326e41c'),
-(12, 'A1234567', '63c426be2d9a3dc64ff8544651a65289');
+(12, 'A1234567', '1a51a69eda9329b3e7365590e6780755'),
+(14, 'K1123412', '3d801aa532c1cec3ee82d87a99fdf63f'),
+(15, 'F1234567', '3d801aa532c1cec3ee82d87a99fdf63f'),
+(16, 'A536B4F4', '3d801aa532c1cec3ee82d87a99fdf63f'),
+(17, 'A759D77B', '3d801aa532c1cec3ee82d87a99fdf63f');
 
 -- --------------------------------------------------------
 
@@ -302,8 +306,12 @@ CREATE TABLE `tblusers` (
 
 INSERT INTO `tblusers` (`user_id`, `last_name`, `first_name`, `middle_initial`, `exp_date`, `user_type`, `status`) VALUES
 ('A1234567', 'CORTEZ', 'REX', 'T', '0000-00-00', 'ADMINISTRATOR', 'ACTIVE'),
+('A536B4F4', 'ALAR', 'HERNAN', 'S', '0000-00-00', '', 'ACTIVE'),
+('A759D77B', 'ALAR', 'HERNAN', 'S', '2017-12-20', 'ADMINISTRATOR', 'ACTIVE'),
+('F1234567', 'DORIN', 'ROMMEL', 'L', '2017-12-20', 'FACULTY', 'ACTIVE'),
 ('K1120123', 'VILLAVER', 'RAY VINCENT PHILLIP', 'D', '0000-00-00', 'STUDENT', 'ACTIVE'),
 ('K1120945', 'CABUSORA', 'MARK JOSEPH', 'L', '0000-00-00', 'ADMINISTRATOR', 'INACTIVE'),
+('K1123412', 'MARAYAN', 'HAZEL', '', '2017-12-20', 'STUDENT', 'ACTIVE'),
 ('K1123456', 'PILAPIL', 'DIA ROSE', 'C', '0000-00-00', 'ADMINISTRATOR', 'INACTIVE'),
 ('K1145678', 'ABARCO', 'KIMBERLY', 'M', '0000-00-00', 'STUDENT', 'INACTIVE'),
 ('K1189012', 'PADILLA', 'JERIETTE', 'M', '0000-00-00', 'FACULTY', 'INACTIVE'),
@@ -470,7 +478,7 @@ ALTER TABLE `tbldepartment`
 -- AUTO_INCREMENT for table `tblpasswords`
 --
 ALTER TABLE `tblpasswords`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `tblproponents`

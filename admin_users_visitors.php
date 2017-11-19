@@ -6,16 +6,17 @@
   if(isset($_POST['add_userVisitor']))
   {
     $userID = $_POST['add_txtUserID'];
-    $password = $_POST['add_txtPassword'];
+    $password = md5($_POST['add_txtPassword']);
     $lastName = $_POST['add_txtLastName'];
     $firstName = $_POST['add_txtFirstName'];
     $middleInitial = $_POST['add_txtMiddleInitial'];
+    $expDate = 'date_sub(date(now()), INTERVAL -1 MONTH)';
     $userType = 'VISITOR';
     $status = 'ACTIVE';
 
     //query for adding new record in tblUsers
-    $queryAddUserVisitor = "INSERT INTO tblUsers(user_id, last_name, first_name, middle_initial, user_type, status)
-                          VALUES(upper('$userID'), upper('$lastName'), upper('$firstName'), upper('$middleInitial'), '$userType', '$status')";
+    $queryAddUserVisitor = "INSERT INTO tblUsers(user_id, last_name, first_name, middle_initial, exp_date, user_type, status)
+                          VALUES(upper('$userID'), upper('$lastName'), upper('$firstName'), upper('$middleInitial'), $exp_date, '$userType', '$status')";
 
     //query for adding new record in tblPasswords
     $queryAddUserVisitorPassword = "INSERT INTO tblPasswords(user_id, password) VALUES(upper('$userID'), '$password')";
@@ -47,6 +48,17 @@
 
   //fetching of result of queryUserResult
   $rowLoggedUser = mysqli_fetch_assoc($queryLoggedUserResult);
+
+  function AutoGenerateVisitorID() { 
+
+            $s = strtoupper(md5(uniqid(rand(),true)));
+ 
+            $guidText = str_pad('V',8,substr($s,0,9));
+     
+            return $guidText;
+        }
+        // End Generate Guid 
+        $Guid = AutoGenerateVisitorID();
 ?>
 <!DOCTYPE html>
 <html>
@@ -229,7 +241,7 @@ function alphaOnly(e) {
                         <tr>
                             <td>User ID</td>
                             <td> 
-                              <input type="text" name="add_txtUserID" class="form-control" required="" style="text-transform: uppercase;">
+                              <input type="text" name="add_txtUserID" class="form-control" required="" value="<?php echo $Guid;?>"style="text-transform: uppercase;" readonly="readonly">
                             </td>
                         </tr>
                         <tr>
