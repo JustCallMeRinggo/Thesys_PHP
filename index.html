@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+<title>Thesys | Login</title>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" type="text/css" href="bootstrap-3.3.7-dist/css/bootstrap.min.css"/>
@@ -7,7 +8,7 @@
 <script src='<%=ResolveUrl("~/bootstrap-3.3.7/dist/js/bootstrap.min.js")%>'></script>
 <style>
 * {box-sizing:border-box}
-body {font-family: Verdana,sans-serif;height: 666px}
+body {font-family: Verdana,sans-serif;}
 .mySlides {display:none;}
 
 /* Slideshow container */
@@ -70,28 +71,28 @@ body {font-family: Verdana,sans-serif;height: 666px}
 }
 
 /* On smaller screens, decrease text size */
-@media only screen and (max-width: 300px) {
+@media only screen and (max-width: 100%) {
   .text {font-size: 11px}
 }
 </style>
 </head>
-<body>
+<body style="height: 666px;">
 
 <div class="slideshow-container">
 
 <div class="mySlides fade">
   <div class="numbertext"></div>
-  <img src="images/UMak_Oval.jpg" style="width:100%">
+  <img class="img-responsive" src="images/UMak_Oval.jpg" style="width: 100%">
 </div>
 
 <div class="mySlides fade">
   <div class="numbertext"></div>
-  <img src="images/hpsb.jpg" style="width:100%">
+  <img class="img-responsive" src="images/hpsb.jpg" style="width: 100%">
 </div>
 
 <div class="mySlides fade">
   <div class="numbertext"></div>
-  <img src="images/umak3.jpg" style="width:100%">
+  <img class="img-responsive" src="images/umak3.jpg" style="width: 100%">
 </div>
 
 </div>
@@ -125,32 +126,32 @@ function showSlides() {
 }
 </script>
 
-
-<div style="background-color:rgba(0,0,0,0.1);border-radius:1px;width:73%;height:100%;position:absolute;padding:25px;left: 2%;top:40px; font-size: 80px; font-family: sans-serif; color: white;">
+<div class="row">
+<div class ="col-lg-8" style="background-color:rgba(0,0,0,0.1);border-radius:1px;width:73%;height:100%;position:absolute;padding:25px;left: 2%;top:3%; font-size: 570%; font-family: sans-serif; color: white;">
 
   
-  <center><img src="images/makUlogo.png" style="margin-top: 40px; width: 100% height: 100%"><br></center>
+  <center><img class="img-responsive" src="images/makUlogo.png" style="margin-top: 3%;"></center>
 
-<div style="margin-top: 30px;">
+<div style="margin-top: 2%;">
   <CENTER>WELCOME TO <br> UNIVERSITY OF MAKATI</CENTER>
 </div>
 
 
 </div>
 
-<div style="background-color:rgba(0,0,0,0.1);border-radius:1px;width:23.4%;height:100%;position:absolute;padding:25px; right:1.6%;top:40px;">
+<div class="col-lg-4" style="background-color:rgba(0,0,0,0.1);border-radius:1px;width:23.4%;height:100%;position:absolute;padding:25px; right:1.6%;top:3%;">
   
-    <br><br> <h2><center><img src="images/logo3.png"></center></h2><br><br>
+    <br><br><h2><center><img class="img-responsive" src="images/logo3.png"></center></h2><br><br>
 
     <form action="login_config.php" method="post">
     
       <div class="form-group">
-         <label>Username: </label><br>
-         <input type="text" class="form-control" placeholder="Enter username" name="userID" required="" style="text-transform: capitalize;"/>
+         <label for="inputdefault">Username: </label><br>
+         <input id="inputdefault" type="text" class="form-control" placeholder="Enter username" name="userID" required="" style="text-transform: capitalize;"/>
       </div>
                          
         <div class="form-group">
-          <label>Password: </label><br>
+          <label for="pwd" >Password: </label><br>
           <input type="password" class="form-control" id="pwd" placeholder="Enter Password" name="password" required="" /><br>
                         
             <center><input type="submit" name="login" value="LOGIN" class="btn btn-default btn-flat"></center>
@@ -161,6 +162,7 @@ function showSlides() {
     </form>
 
   </div>
+</div>
 
 </body>
 </html> 
