@@ -1,5 +1,6 @@
 <?php
    include('dbconnect.php');
+
    if (isset($_POST['addThesis'])) {
     $thesisFile = $_FILES['add_flThesisFile'];
     $thesisAbstract = $_FILES['add_flThesisAbstract'];
@@ -9,7 +10,12 @@
     $thesisFileType = $_POST['add_thesisFileType'];
     $year = $_POST['add_txtYear'];
 
-    if($year < 2017)
+    $yearDiffQuery = "SELECT year(now()) - $year as Difference";
+    $yearDiffQueryResult = mysqli_query($conn, $yearDiffQuery);
+
+    $rowDiff = mysqli_fetch_assoc($yearDiffQueryResult);
+
+    if($rowDiff['Difference'] > 10)
       $thesisStatus = 'ARCHIVED';
     else
       $thesisStatus = 'ACTIVE';
@@ -84,12 +90,15 @@
     {
   
       $keyword = $_POST['thesis_titleKeyword'];
-      $queryTheses = "SELECT * FROM tblThesis WHERE thesis_title LIKE('%$keyword%') AND status LIKE('ACTIVE')";
+      $status = $_POST['ddlStatus'];
+      $queryTheses = "SELECT * FROM tblThesis WHERE thesis_title LIKE('%$keyword%') AND status = '$status'";
       $queryThesesResult = mysqli_query($conn, $queryTheses);
-
     }
   else
   {
+      $autoArchiveQuery = "UPDATE tblThesis set STATUS = 'ARCHIVED' WHERE year(now()) - year_accomplished > 10'";
+      $autoArchiveQueryResult = mysqli_query($conn, $autoArchiveQuery);
+      
       $queryTheses = "SELECT * FROM tblThesis WHERE status LIKE('ACTIVE')";
       $queryThesesResult = mysqli_query($conn, $queryTheses);
     }
@@ -340,16 +349,7 @@
         </div>
         <div class="col-lg-3 text-right">
                 <table style="width:100%;">
-                    <tr>
-                      <td class="text-right" valign="center">
-                         Status: &nbsp;
-                      </td>
-                        <td class="text-right">
-                            <select name="ddlStatus">
-                              <option selected="selected">Active</option>
-                              <option>Archived</option>
-                            </select>
-                        </td>
+                      <tr>
                         <td class="text-right">
                             &nbsp;
                             &nbsp;
@@ -363,11 +363,20 @@
     <div class="col-lg-6">
       
     </div>
-    <div class="col-lg-6 text-right">
+    <div class="col-lg-9 text-right">
       <br>
             <form action="admin_thesis_undergraduate.php" method="post">
                 <table style="width:100%;">
                     <tr>
+                      <td>
+                         Status: &nbsp; &nbsp;
+                    </td>
+                    <td>
+                            <select name="ddlStatus">
+                              <option>Active</option>
+                              <option>Archived</option>
+                            </select>
+                    </td>
                       <td class="text-right" valign="center" class="form-control">
                          <font style="font-family: sans-serif;">Search Thesis Title</font>&nbsp;&nbsp;
                       </td>

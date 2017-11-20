@@ -24,6 +24,8 @@
     $queryAddUserVisitorResult = mysqli_query($conn, $queryAddUserVisitor);
     $queryAddUserVisitorPasswordResult = mysqli_query($conn, $queryAddUserVisitorPassword);
   }
+    $deactivateStudent = "UPDATE tblUsers SET status = 'INACTIVE' WHERE user_type = 'VISITOR' AND DATEDIFF(date(now()), date(exp_date)) = 0";
+    $deactivateStudentResult = mysqli_query($conn, $deactivateStudent);
 
     $queryVisitors = "SELECT * FROM tblUsers WHERE user_type LIKE('VISITOR') AND status LIKE('active')";
     $queryVisitorsResult = mysqli_query($conn, $queryVisitors);

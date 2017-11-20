@@ -22,6 +22,8 @@
     $queryAddUserFacultyResult = mysqli_query($conn, $queryAddUserFaculty);
     $queryAddUserFacultyPasswordResult = mysqli_query($conn, $queryAddUserFacultyPassword);
   }
+    $deactivateFaculty = "UPDATE tblUsers SET status = 'INACTIVE' WHERE user_type = 'FACULTY' AND DATEDIFF(date(now()), date(exp_date)) = 0";
+    $deactivateFacultyResult = mysqli_query($conn, $deactivateFaculty);
 
      $queryFaculty = "SELECT * FROM tblUsers WHERE user_type LIKE('%faculty%') AND status LIKE('active')";
      $queryFacultyResult = mysqli_query($conn, $queryFaculty);
