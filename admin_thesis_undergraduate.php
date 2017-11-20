@@ -39,9 +39,9 @@
         if ($thesisFileSize < 100000000 && $thesisAbstractSize < 100000000)
         {
           $newThesisFileName = $thesisID."file.".$thesisFileActualExt;
-          $thesisFileDestination = 'uploadedPictures/'.$newThesisFileName;
-          $queryUploadImage = "INSERT INTO tblThesis(thesis_id, thesis_title, year_accomplished, file, file_type,status ) VALUES ('$thesisID','$thesisTitle', $year, '$thesisFileDestination', '$thesisFileType', '$thesisStatus')";
-          $uploadImageResult = mysqli_query($conn,$queryUploadImage);
+          $thesisFileDestination = 'uploads/'.$newThesisFileName;
+          $queryUploadFile = "INSERT INTO tblThesis(thesis_id, thesis_title, year_accomplished, file, file_type,status ) VALUES ('$thesisID','$thesisTitle', $year, '$thesisFileDestination', '$thesisFileType', '$thesisStatus')";
+          $uploadFileResult = mysqli_query($conn,$queryUploadFile);
           move_uploaded_file($thesisFileTempName, $thesisFileDestination);
 
           
