@@ -1,6 +1,20 @@
-
 <?php
-  require('dbconnect.php');
+    require('dbconnect.php');
+    if(isset($_POST['search']))
+    {
+  
+      $keyword = $_POST['thesis_titleKeyword'];
+      $queryTheses = "SELECT * FROM tblThesis WHERE thesis_title LIKE('%$keyword%') AND STATUS LIKE('ACTIVE')";
+      $queryThesesResult = mysqli_query($conn, $queryTheses);
+
+    }
+    else
+    {
+      $queryTheses = "SELECT * FROM tblThesis WHERE STATUS LIKE('ACTIVE')";
+      $queryThesesResult = mysqli_query($conn, $queryTheses);
+    }
+?>
+<?php
   session_start();
 
   $userID = $_SESSION['user_id'];
@@ -32,7 +46,9 @@
   <link rel="stylesheet" href="bower_components/Ionicons/css/ionicons.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
+  
   <link rel="stylesheet" href="dist/css/skins/skin-green-light.min.css">
+
 
   <!-- Google Font -->
   <link rel="stylesheet"
@@ -75,9 +91,9 @@
               <li class="user-header">
                 <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
                 <p>
-                  <?php echo $rowLoggedUser['last_name'].", "; ?>
-                  <?php echo $rowLoggedUser['first_name']." "; ?>
-                  <?php echo $rowLoggedUser['middle_initial']."."; ?>
+                  <?php echo $rowLoggedUser['last_name'].", ";?>
+                  <?php echo $rowLoggedUser['first_name']." ";?>
+                  <?php echo $rowLoggedUser['middle_initial']."."?>
              </p>
               </li>
               <!-- Menu Body -->
@@ -109,8 +125,8 @@
           <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info">
+          <br>
           <p>
-            <br>
             <?php echo $rowLoggedUser['first_name']."<br>".$rowLoggedUser['last_name'];?>
           </p>
           <!-- Status -->
@@ -140,7 +156,7 @@
             <li><a href="visitor_thesis_doctorate.php"><i class="fa fa-institution"></i> Doctorate</a></li>
           </ul>
 
-          <li><a href="visitor_requests.php"><i class="fa fa-th"></i> <span>Requests</span></a></li>
+          <li><a href="faculty_requests.php"><i class="fa fa-th"></i> <span>Requests</span></a></li>
         </li>
       </ul>
 
@@ -159,17 +175,69 @@
       </h1>
       <ol class="breadcrumb">
         <li><i class="fa fa-dashboard"></i>Level</li>
-        <li class="active">Visitor</li>
+        <li class="active">Faculty</li>
       </ol>
+      <div class="row">
+        <div class="col-lg-9">
+          
+        </div>
+        <div class="col-lg-6">
+          
+        </div>
+        <div class="col-lg-6 text-right">
+          <div class="input">
+            <form action="visitor_thesis_masteral.php" method="post">
+                <table style="width:100%;">
+                    <tr>
+                      <td class="text-right" valign="center" class="form-control">
+                         <font style="font-family: sans-serif;">Search Thesis Title</font>&nbsp;&nbsp;
+                      </td>
+                        <td class="text-right">
+                          <input type="text" name="thesis_titleKeyword" class="form-control">
+                        </td>
+                        <td class="text-right">
+                          <input type="submit" name="search" value="Search" class="btn btn-default btn-flat">
+                        </td>
+                    </tr>
+                </table>
+              </form>
+            </div>
+        </div>
+      </div>
     </section>
+
 
     <!-- Main content -->
     <section class="content container-fluid">
+      <table class="table table-bordered" style="width:100%;">
+              <tr style="font-size: 18px;">
+                <th>Thesis Title</th>
+                <th>Year Accomplished</th>
+                <th>Action</th>
+              </tr>
 
-      <!--------------------------
-        | Your Page Content Here |
-        -------------------------->
+              <?php
 
+                while($rowTheses = mysqli_fetch_array($queryThesesResult))
+                {
+                  $i = 1;
+              ?>
+
+              <tr>
+                <td><?php echo $rowTheses['thesis_title']; ?></td>
+                <td><?php echo $rowTheses['year_accomplished']; ?></td>
+              <!--
+                Ang mga button sa ibaba ay isama sa loob ng loop kapag nag-retrieve na ng records galing database
+              -->
+                <td>
+                  <a href="visitor_viewThesis_masteral.php?thesis_id=<?php echo $rowTheses['thesis_id']?>" class="btn btn-sm btn-success">View</a>
+               </td>
+               <?php
+                $i++;
+                }
+               ?>
+              </tr>
+          </table>
     </section>
     <!-- /.content -->
   </div>

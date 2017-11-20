@@ -4,7 +4,7 @@
 
 
   //logic for adding new administrator
-  if(isset($_POST['edit_thesisUndergraduate']))
+  if(isset($_POST['edit_thesisDoctorate']))
   {
     $thesisIDtoEdit = $_POST['edit_txtThesisID'];
     $thesisTitleToEdit = $_POST['edit_txtThesisTitle'];
@@ -34,10 +34,10 @@
 
     if(is_null($thesisFileToEdit) && is_null($thesisAbstractToEdit))
     {
-      $queryUpdateThesisUndergraduate = "UPDATE tblThesis SET thesis_title = '$thesisTitleToEdit', year_accomplished = '$thesisYearToEdit' WHERE thesis_id = '$thesisIDtoEdit'";
-      $queryUpdateThesisUndergraduateResult = mysqli_query($conn, $queryUpdateThesisUndergraduate);
+      $queryUpdateThesisDoctorate = "UPDATE tblThesis SET thesis_title = '$thesisTitleToEdit', year_accomplished = '$thesisYearToEdit' WHERE thesis_id = '$thesisIDtoEdit'";
+      $queryUpdateThesisDoctorateResult = mysqli_query($conn, $queryUpdateThesisDoctorate);
 
-      header('location: admin_thesis_undergraduate.php');
+      header('location: admin_thesis_doctorate.php');
     }
     elseif (!is_null($thesisFileToEdit) && is_null($thesisAbstractToEdit)) {
 
@@ -49,11 +49,11 @@
           {
             $newThesisFileName = $thesisID."file.".$thesisFileActualExt;
             $thesisFileDestination = 'uploadedPictures/'.$newThesisFileName;
-            $queryUpdateThesisUndergraduate = "UPDATE tblThesis SET thesis_title = '$thesisTitleToEdit', year_accomplished = '$thesisYearToEdit', file = '$thesisFileDestination' WHERE thesis_id = '$thesisIDtoEdit'";
-            $queryUpdateThesisUndergraduateResult = mysqli_query($conn, $queryUpdateThesisUndergraduate);
+            $queryUpdateThesisDoctorate = "UPDATE tblThesis SET thesis_title = '$thesisTitleToEdit', year_accomplished = '$thesisYearToEdit', file = '$thesisFileDestination' WHERE thesis_id = '$thesisIDtoEdit'";
+            $queryUpdateThesisDoctorateResult = mysqli_query($conn, $queryUpdateThesisDoctorate);
             move_uploaded_file($thesisFileTempName, $thesisFileDestination);
 
-            header('location: admmin_thesis_undergraduate.php');
+            header('location: admmin_thesis_doctorate.php');
           }
           else
             ?>
@@ -62,7 +62,7 @@
 
         </script>
       <?php
-      echo"<script>location.assign('admin_editThesis_undergraduate.php')</script>";
+      echo"<script>location.assign('admin_editThesis_doctorate.php')</script>";
         }
         else
           ?>
@@ -71,7 +71,7 @@
 
         </script>
       <?php
-      echo"<script>location.assign('admin_editThesis_undergraduate.php')</script>";
+      echo"<script>location.assign('admin_editThesis_doctorate.php')</script>";
       }
       else
         ?>
@@ -80,7 +80,7 @@
 
         </script>
       <?php
-      echo"<script>location.assign('admin_editThesis_undergraduate.php')</script>";
+      echo"<script>location.assign('admin_editThesis_doctorate.php')</script>";
     }
     elseif (is_null($thesisFileToEdit) && !is_null($thesisAbstractToEdit)) {
       if(in_array($thesisAbstractActualExt, $allowedThesisAbstractExt))
@@ -89,13 +89,13 @@
         {
           if($thesisAbstractSize < 100000000)
           {
-            $queryUpdateThesisUndergraduate = "UPDATE tblThesis SET thesis_title = '$thesisTitleToEdit', year_accomplished = '$thesisYearToEdit' WHERE thesis_id = '$thesisIDtoEdit'";
-            $queryUpdateThesisUndergraduateResult = mysqli_query($conn, $queryUpdateThesisUndergraduate);
+            $queryUpdateThesisDoctorate = "UPDATE tblThesis SET thesis_title = '$thesisTitleToEdit', year_accomplished = '$thesisYearToEdit' WHERE thesis_id = '$thesisIDtoEdit'";
+            $queryUpdateThesisDoctorateResult = mysqli_query($conn, $queryUpdateThesisDoctorate);
 
             $queryUpdateThesisAbstract = "UPDATE tblThesis_abstract SET image = '$thesisAbstractData' WHERE thesis_id = '$thesisIDtoEdit'";
             $queryUpdateThesisAbstractResult = mysqli_query($conn, $queryUpdatedThesisAbstract);
 
-            header('location: admmin_thesis_undergraduate.php');
+            header('location: admmin_thesis_doctorate.php');
           }
           else
             ?>
@@ -104,7 +104,7 @@
 
         </script>
       <?php
-      echo"<script>location.assign('admin_editThesis_undergraduate.php')</script>";
+      echo"<script>location.assign('admin_editThesis_doctorate.php')</script>";
         }
         else
           ?>
@@ -113,7 +113,7 @@
 
         </script>
       <?php
-      echo"<script>location.assign('admin_editThesis_undergraduate.php')</script>";
+      echo"<script>location.assign('admin_editThesis_doctorate.php')</script>";
       }
       else
         ?>
@@ -122,7 +122,7 @@
 
         </script>
       <?php
-      echo"<script>location.assign('admin_editThesis_undergraduate.php')</script>";
+      echo"<script>location.assign('admin_editThesis_doctorate.php')</script>";
     }
 
   }
@@ -280,9 +280,9 @@
               </span>
           </a>
           <ul class="treeview-menu">
-            <li class="active"><a href="admin_thesis_undergraduate.php"><i class="fa fa-graduation-cap"></i> Undergraduate</a></li>
+            <li><a href="admin_thesis_undergraduate.php"><i class="fa fa-graduation-cap"></i> Undergraduate</a></li>
             <li><a href="admin_thesis_masteral.php"><i class="fa fa-industry"></i> Masteral</a></li>
-            <li><a href="admin_thesis_doctorate.php"><i class="fa fa-institution"></i> Doctorate</a></li>
+            <li class="active"><a href="admin_thesis_doctorate.php"><i class="fa fa-institution"></i> Doctorate</a></li>
           </ul>
 
           <li><a href="admin_requests.php"><i class="fa fa-th"></i> <span>Requests</span></a></li>
@@ -302,14 +302,14 @@
       </h1>
       <ol class="breadcrumb">
         <li><i class="fa fa-dashboard"></i> Home</li>
-        <li class="active">Theses (Undergraduate)</li>
+        <li class="active">Theses (Doctorate)</li>
       </ol>
     </section>
  <!-- Main content -->
    <br>
     <br>
     <div class="col-lg-6">
-      <form action="admin_editThesis_undergraduate.php" method="post">
+      <form action="admin_editThesis_doctorate.php" method="post">
             <table class="table table-bordered" align="center">
               <tr>
                 <td>Thesis ID</td>
@@ -351,7 +351,7 @@
                   
                 </td>
                 <td class="text-right" colspan="3">
-                  <input type="submit" name="edit_thesisUndergraduate" value="Edit Thesis Record" class="btn btn-default btn-flat">
+                  <input type="submit" name="edit_thesisDoctorate" value="Edit Thesis Record" class="btn btn-default btn-flat">
                 </td>
               </tr>
           </table>

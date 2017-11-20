@@ -13,7 +13,7 @@
                              VALUES(upper('$thesisID'), '$authorLastName', '$authorFirstName', '$authorMiddleInitial')";
     $queryAddThesisAuthorResult = mysqli_query($conn, $queryAddThesisAuthor);
 
-    header('location: admin_viewThesis_undergraduate.php?thesis_id='.$thesisID.'');
+    header('location: admin_viewThesis_doctorate.php?thesis_id='.$thesisID.'');
   }
   elseif (isset($_POST['addThesisEvaluator'])) {
     $thesisID = $_POST['add_txtThesisID'];
@@ -31,7 +31,7 @@
     $queryAddThesisEvaluatorResult = mysqli_query($conn, $queryAddThesisEvaluator);
 
 
-    header('location: admin_viewThesis_undergraduate.php?thesis_id='.$thesisID.'');
+    header('location: admin_viewThesis_doctorate.php?thesis_id='.$thesisID.'');
   }
    
    $thesisID = $_GET['thesis_id'];
@@ -219,9 +219,9 @@ function alphaOnly(e) {
               </span>
           </a>
           <ul class="treeview-menu">
-            <li class="active"><a href="admin_thesis_undergraduate.php"><i class="fa fa-graduation-cap"></i> Undergraduate</a></li>
+            <li><a href="admin_thesis_undergraduate.php"><i class="fa fa-graduation-cap"></i> Undergraduate</a></li>
             <li><a href="admin_thesis_masteral.php"><i class="fa fa-industry"></i> Masteral</a></li>
-            <li><a href="admin_thesis_doctorate.php"><i class="fa fa-institution"></i> Doctorate</a></li>
+            <li class="active"><a href="admin_thesis_doctorate.php"><i class="fa fa-institution"></i> Doctorate</a></li>
           </ul>
 
           <li><a href="admin_requests.php"><i class="fa fa-th"></i> <span>Requests</span></a></li>
@@ -241,7 +241,7 @@ function alphaOnly(e) {
       </h1>
       <ol class="breadcrumb">
         <li><i class="fa fa-dashboard"></i> Home</li>
-        <li class="active">Theses (Undergraduate)</li>
+        <li class="active">Theses (Masteral)</li>
       </ol>
        <!--ADD THESIS AUTHOR MODAL-->
       <div class="modal fade" id="modal_addAuthor" role="dialog">
@@ -252,7 +252,7 @@ function alphaOnly(e) {
                 </div>
                 <div class="modal-body">
                 <div class="box-body">
-                  <form action="admin_viewThesis_undergraduate.php" method="post" enctype="multipart/form-data">
+                  <form action="admin_viewThesis_doctorate.php" method="post" enctype="multipart/form-data">
                     <table class="table table-bordered">
                         <tr>
                             <td>Thesis ID</td>
@@ -298,7 +298,7 @@ function alphaOnly(e) {
                 </div>
                 <div class="modal-body">
                 <div class="box-body">
-                  <form action="admin_viewThesis_undergraduate.php" method="post" enctype="multipart/form-data">
+                  <form action="admin_viewThesis_doctorate.php" method="post" enctype="multipart/form-data">
                     <table class="table table-bordered">
                         <tr>
                             <td>Thesis ID</td>

@@ -134,14 +134,14 @@
         <div class="pull-left info">
           <br>
            <p>
-            <?php echo $rowLoggedUser['first_name']."<br>".$rowLoggedUser['last_name'];?>
+            <?php echo $rowLoggedUser['first_name']; echo "<br>"; echo $rowLoggedUser['last_name'];?>
           </p>
         </div>
       </div>
 
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu" data-widget="tree">
-       <li><a href="student_dashboard.php"><i class="fa fa-th"></i> <span>Dashboard</span></a></li>
+       <li><a href="faculty_dashboard.php"><i class="fa fa-th"></i> <span>Dashboard</span></a></li>
         <li class="treeview active">
           <a href="#"><i class="fa fa-book"></i> <span>Theses</span>
             <span class="pull-right-container">
@@ -149,10 +149,12 @@
               </span>
           </a>
           <ul class="treeview-menu">
-            <li class="active"><a href="student_thesis_undergraduate.php"><i class="fa fa-graduation-cap"></i> Undergraduate</a></li>
-            <li><a href="student_thesis_masteral.php"><i class="fa fa-industry"></i> Masteral</a></li>
-            <li><a href="student_thesis_doctorate.php"><i class="fa fa-institution"></i> Doctorate</a></li>
+            <li><a href="faculty_thesis_undergraduate.php"><i class="fa fa-graduation-cap"></i> Undergraduate</a></li>
+            <li><a href="faculty_thesis_masteral.php"><i class="fa fa-industry"></i> Masteral</a></li>
+            <li class="active"><a href="faculty_thesis_doctorate.php"><i class="fa fa-institution"></i> Doctorate</a></li>
           </ul>
+
+          <li><a href="faculty_requests.php"><i class="fa fa-th"></i> <span>Requests</span></a></li>
         </li>
       </ul>
     </section>
@@ -169,7 +171,7 @@
       </h1>
       <ol class="breadcrumb">
         <li><i class="fa fa-dashboard"></i> Home</li>
-        <li class="active">Theses (Undergraduate)</li>
+        <li class="active">Theses (Doctorate)</li>
       </ol>
     </section>
 

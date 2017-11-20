@@ -5,5 +5,5 @@
 	$archiveThesisQuery = "UPDATE tblThesis SET status = 'ARCHIVED' WHERE thesis_id = '$thesisID'";
 	$archiveThesisQueryResult = mysqli_query($conn, $archiveThesisQuery);
 
-	header('location: admin_thesis_undergraduate.php');
+	header('location: admin_thesis_doctorate.php');
 ?>

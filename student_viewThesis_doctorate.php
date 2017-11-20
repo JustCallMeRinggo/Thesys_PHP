@@ -149,9 +149,9 @@
               </span>
           </a>
           <ul class="treeview-menu">
-            <li class="active"><a href="student_thesis_undergraduate.php"><i class="fa fa-graduation-cap"></i> Undergraduate</a></li>
+            <li><a href="student_thesis_undergraduate.php"><i class="fa fa-graduation-cap"></i> Undergraduate</a></li>
             <li><a href="student_thesis_masteral.php"><i class="fa fa-industry"></i> Masteral</a></li>
-            <li><a href="student_thesis_doctorate.php"><i class="fa fa-institution"></i> Doctorate</a></li>
+            <li class="active"><a href="student_thesis_doctorate.php"><i class="fa fa-institution"></i> Doctorate</a></li>
           </ul>
         </li>
       </ul>
@@ -169,7 +169,7 @@
       </h1>
       <ol class="breadcrumb">
         <li><i class="fa fa-dashboard"></i> Home</li>
-        <li class="active">Theses (Undergraduate)</li>
+        <li class="active">Theses (Doctorate)</li>
       </ol>
     </section>
 

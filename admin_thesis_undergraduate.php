@@ -40,26 +40,44 @@
         {
           $newThesisFileName = $thesisID."file.".$thesisFileActualExt;
           $thesisFileDestination = 'uploads/'.$newThesisFileName;
-          $queryUploadFile = "INSERT INTO tblThesis(thesis_id, thesis_title, year_accomplished, file, file_type,status ) VALUES ('$thesisID','$thesisTitle', $year, '$thesisFileDestination', '$thesisFileType', '$thesisStatus')";
+          $queryUploadFile = "INSERT INTO tblThesis(thesis_id, thesis_title, year_accomplished, file, file_type,status ) VALUES (upper('$thesisID'),'$thesisTitle', $year, '$thesisFileDestination', '$thesisFileType', '$thesisStatus')";
           $uploadFileResult = mysqli_query($conn,$queryUploadFile);
           move_uploaded_file($thesisFileTempName, $thesisFileDestination);
 
           
-          $queryUploadThesisAbstract = "INSERT INTO tblThesis_abstract(thesis_id, image) VALUES('$thesisID','$thesisAbstractData')";
+          $queryUploadThesisAbstract = "INSERT INTO tblThesis_abstract(thesis_id, image) VALUES(upper('$thesisID'),'$thesisAbstractData')";
           $uploadThesisAbstractResult = mysqli_query($conn, $queryUploadThesisAbstract);
           header('location: admin_thesis_undergraduate.php');
         }
         else{
-        echo "Your file is too big!";
+        ?>
+        <script type="text/javascript">
+          alert('Your File is Too Big!');
+
+        </script>
+      <?php
+      echo"<script>location.assign('admin_thesis_undergraduate.php')</script>";
         }
 
       }
       else {
-        echo "You have an Error!";
+        ?>
+        <script type="text/javascript">
+          alert('You Have an Error!');
+
+        </script>
+      <?php
+      echo"<script>location.assign('admin_thesis_undergraduate.php')</script>";
       }
     }
     else{
-      echo "Invalid File Extension!";
+      ?>
+        <script type="text/javascript">
+          alert('Invalid File Extension!');
+
+        </script>
+      <?php
+      echo"<script>location.assign('admin_thesis_undergraduate.php')</script>";
     }
   }
   elseif(isset($_POST['search']))
@@ -271,19 +289,19 @@
                         <tr>
                             <td>Thesis ID</td>
                             <td> 
-                              <input type="text" name="add_txtThesisID" class="form-control">
+                              <input type="text" name="add_txtThesisID" class="form-control" required="" style="text-transform: uppercase;">
                             </td>
                         </tr>
                         <tr>
                             <td>Thesis Title</td>
                             <td>
-                                <input type="text" name="add_txtThesisTitle" class="form-control">
+                                <input type="text" name="add_txtThesisTitle" class="form-control" required="">
                             </td>
                         </tr>
                         <tr>
-                            <td>Thesis File</td>
+                            <td>Thesis File (.pdf/.docx/.zip)</td>
                             <td>
-                              <input type="file" name="add_flThesisFile">
+                              <input type="file" name="add_flThesisFile" required="">
                             </td>
                         </tr>
                         <tr>
@@ -298,12 +316,12 @@
                         <tr>
                             <td>Year Accomplished:</td>
                             <td>
-                                <input type="text" name="add_txtYear" class="form-control">
+                                <input type="text" name="add_txtYear" class="form-control" required="">
                             </td>
                         </tr>
                         <tr>
-                          <td>Thesis Abstract</td>
-                          <td><input type="file" name="add_flThesisAbstract"></td>
+                          <td>Thesis Abstract (.jpg/.jpeg/.png)</td>
+                          <td><input type="file" name="add_flThesisAbstract" required=""></td>
                         </tr>
                     </table>
                 </div>

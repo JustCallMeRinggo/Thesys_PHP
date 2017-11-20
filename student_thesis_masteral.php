@@ -1,5 +1,21 @@
 <?php
-  require 'dbconnect.php';
+    require 'dbconnect.php';
+     if(isset($_POST['search']))
+    {
+  
+      $keyword = $_POST['thesis_titleKeyword'];
+      $queryTheses = "SELECT * FROM tblThesis WHERE thesis_title LIKE('%$keyword%') AND status LIKE('ACTIVE')";
+      $queryThesesResult = mysqli_query($conn, $queryTheses);
+
+    }
+    else
+    {
+      $queryTheses = "SELECT * FROM tblThesis WHERE status LIKE('ACTIVE')";
+      $queryThesesResult = mysqli_query($conn, $queryTheses);
+    }
+?>
+
+<?php
   session_start();
 
   $userID = $_SESSION['user_id'];
@@ -22,6 +38,7 @@
 
   $_SESSION['user_id'] = $userID;
 
+ 
 
 ?>
 <!DOCTYPE html>
@@ -39,9 +56,8 @@
   <link rel="stylesheet" href="bower_components/Ionicons/css/ionicons.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
-  
-  <link rel="stylesheet" href="dist/css/skins/skin-green-light.min.css">
 
+  <link rel="stylesheet" href="dist/css/skins/skin-green-light.min.css">
 
   <!-- Google Font -->
   <link rel="stylesheet"
@@ -54,7 +70,7 @@
   <header class="main-header">
 
     <!-- Logo -->
-    <a href="index2.html" class="logo">
+    <a href="student_dashboard.php" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
        <span class="logo-mini"><b>T</b>SYS</span>
       <!-- logo for regular state and mobile devices -->
@@ -136,16 +152,16 @@
       <ul class="sidebar-menu" data-widget="tree">
       
         <!-- Optionally, you can add icons to the links -->
-        <li class="active"><a href="student_dashboard.php"><i class="fa fa-th"></i> <span>Dashboard</span></a></li>
+        <li><a href="student_dashboard.php"><i class="fa fa-th"></i> <span>Dashboard</span></a></li>
         <li class="treeview active">
-
+ 
           <a href="#"><i class="fa fa-book"></i> <span>Theses</span>
             <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>
           </a>
           <ul class="treeview-menu">
-           <li><a href="student_thesis_undergraduate.php"><i class="fa fa-graduation-cap"></i> Undergraduate</a></li>
+            <li><a href="student_thesis_undergraduate.php"><i class="fa fa-graduation-cap"></i> Undergraduate</a></li>
             <li class="active"><a href="student_thesis_masteral.php"><i class="fa fa-industry"></i> Masteral</a></li>
             <li><a href="student_thesis_doctorate.php"><i class="fa fa-institution"></i> Doctorate</a></li>
           </ul>
@@ -169,17 +185,66 @@
       </h1>
       <ol class="breadcrumb">
         <li><i class="fa fa-dashboard"></i>Home</li>
-        <li class="active">Student - Thesis (Masteral)</li>
+        <li class="active">Student</li>
       </ol>
+      <div class="row">
+        <div class="col-lg-9">
+          
+        </div>
+        <div class="col-lg-6">
+          
+        </div>
+        <div class="col-lg-6 text-right">
+            <form action="student_thesis_masteral.php" method="post">
+                <table style="width:100%;">
+                    <tr>
+                      <td class="text-right" valign="center" class="form-control">
+                         <font style="font-family: sans-serif;">Search Thesis Title</font>&nbsp;&nbsp;
+                      </td>
+                        <td class="text-right">
+                          <input type="text" name="thesis_titleKeyword" class="form-control">
+                        </td>
+                        <td class="text-right">
+                          <input type="submit" name="search" value="Search" class="btn btn-default btn-flat">
+                        </td>
+                    </tr>
+                </table>
+              </form>
+        </div>
+    </div>
     </section>
 
     <!-- Main content -->
     <section class="content container-fluid">
+         <table class="table table-bordered" style="width:100%;">
+              <tr style="font-size: 18px;">
+                <th>Thesis Title</th>
+                <th>Year Accomplished</th>
+                <th>Action</th>
+              </tr>
 
-      <!--------------------------
-        | Your Page Content Here |
-        -------------------------->
+              <?php
 
+                while($rowTheses = mysqli_fetch_array($queryThesesResult))
+                {
+                  $i = 1;
+              ?>
+
+              <tr>
+                <td><?php echo $rowTheses['thesis_title']; ?></td>
+                <td><?php echo $rowTheses['year_accomplished']; ?></td>
+              <!--
+                Ang mga button sa ibaba ay isama sa loob ng loop kapag nag-retrieve na ng records galing database
+              -->
+                <td>
+                  <a href="student_viewThesis_masteral.php?thesis_id=<?php echo $rowTheses['thesis_id'];?>" class="btn btn-sm btn-success">View</a>
+               </td>
+               <?php
+                $i++;
+                }
+               ?>
+              </tr>
+          </table>
     </section>
     <!-- /.content -->
   </div>

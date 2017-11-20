@@ -1,20 +1,20 @@
 <?php
-    require('dbconnect.php');
-    if(isset($_POST['search']))
-    {
+  require('dbconnect.php');
   
-      $keyword = $_POST['thesis_titleKeyword'];
-      $queryTheses = "SELECT * FROM tblThesis WHERE thesis_title LIKE('%$keyword%') AND STATUS LIKE('ACTIVE')";
-      $queryThesesResult = mysqli_query($conn, $queryTheses);
+   $thesisID = $_GET['thesis_id'];
 
-    }
-    else
-    {
-      $queryTheses = "SELECT * FROM tblThesis WHERE STATUS LIKE('ACTIVE')";
-      $queryThesesResult = mysqli_query($conn, $queryTheses);
-    }
-?>
-<?php
+   $queryThesis = "SELECT * FROM tblThesis WHERE thesis_id = '$thesisID'";
+   $queryThesisResult =  mysqli_query($conn, $queryThesis);
+
+   $queryThesisAbstract = "SELECT * FROM tblThesis_abstract WHERE thesis_id = '$thesisID'";
+   $queryThesisAbstractResult =  mysqli_query($conn, $queryThesisAbstract);
+
+   $queryThesisAuthor = "SELECT * FROM tblProponents WHERE thesis_id='$thesisID'";
+   $queryThesisAuthorResult = mysqli_query($conn, $queryThesisAuthor);
+
+   $queryThesisEvaluator = "SELECT * FROM tblEvaluators WHERE thesis_id = '$thesisID'";
+   $queryThesisEvaluatorResult = mysqli_query($conn, $queryThesisEvaluator);
+
   session_start();
 
   $userID = $_SESSION['user_id'];
@@ -29,6 +29,8 @@
 
   $_SESSION['user_id'] = $userID;
 
+  $rowThesis = mysqli_fetch_assoc($queryThesisResult);
+  $rowThesisAbstract = mysqli_fetch_assoc($queryThesisAbstractResult);
 
 ?>
 <!DOCTYPE html>
@@ -36,7 +38,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Thesys | Theses (Doctorate)</title>
+  <title>Thesys | Theses (Masteral)</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
@@ -61,7 +63,7 @@
   <header class="main-header">
 
     <!-- Logo -->
-    <a href="index2.html" class="logo">
+    <a href="visitor_dashboard.php" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
        <span class="logo-mini"><b>T</b>SYS</span>
       <!-- logo for regular state and mobile devices -->
@@ -92,9 +94,8 @@
                 <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
                 <p>
                   <?php echo $rowLoggedUser['last_name'].", ";?>
-                  <?php echo $rowLoggedUser['first_name']." "; ?>
+                  <?php echo $rowLoggedUser['first_name']." ";?>
                   <?php echo $rowLoggedUser['middle_initial'].".";?>
-                  
              </p>
               </li>
               <!-- Menu Body -->
@@ -126,10 +127,9 @@
           <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info">
-          <br>
           <p>
-            <?php echo $rowLoggedUser['first_name']; echo "<br>"; echo $rowLoggedUser['last_name'];?>
-            
+            <br>
+            <?php echo $rowLoggedUser['first_name']."<br>".$rowLoggedUser['last_name'];?>
           </p>
           <!-- Status -->
          
@@ -144,7 +144,7 @@
       <ul class="sidebar-menu" data-widget="tree">
       
         <!-- Optionally, you can add icons to the links -->
-        <li><a href="faculty_dashboard.php"><i class="fa fa-th"></i> <span>Dashboard</span></a></li>
+        <li><a href="visitor_dashboard.php"><i class="fa fa-th"></i> <span>Dashboard</span></a></li>
         <li class="treeview active">
 
           <a href="#"><i class="fa fa-book"></i> <span>Theses</span>
@@ -153,9 +153,9 @@
               </span>
           </a>
           <ul class="treeview-menu">
-           <li><a href="faculty_thesis_undergraduate.php"><i class="fa fa-graduation-cap"></i> Undergraduate</a></li>
-            <li><a href="faculty_thesis_masteral.php"><i class="fa fa-industry"></i> Masteral</a></li>
-            <li class="active"><a href="faculty_thesis_doctorate.php"><i class="fa fa-institution"></i> Doctorate</a></li>
+           <li><a href="visitor_thesis_undergraduate.php"><i class="fa fa-graduation-cap"></i> Undergraduate</a></li>
+            <li class="active"><a href="visitor_thesis_masteral.php"><i class="fa fa-industry"></i> Masteral</a></li>
+            <li><a href="visitor_thesis_doctorate.php"><i class="fa fa-institution"></i> Doctorate</a></li>
           </ul>
 
           <li><a href="faculty_requests.php"><i class="fa fa-th"></i> <span>Requests</span></a></li>
@@ -173,7 +173,7 @@
     <section class="content-header">
       <h1>
         Theses
-        <small>Doctorate</small>
+        <small>Masteral</small>
       </h1>
       <ol class="breadcrumb">
         <li><i class="fa fa-dashboard"></i>Level</li>
@@ -186,61 +186,59 @@
         <div class="col-lg-6">
           
         </div>
-        <div class="col-lg-6 text-right">
-          <div class="input">
-            <form action="faculty_thesis_doctorate.php" method="post">
-                <table style="width:100%;">
-                    <tr>
-                      <td class="text-right" valign="center" class="form-control">
-                         <font style="font-family: sans-serif;">Search Thesis Title</font>&nbsp;&nbsp;
-                      </td>
-                        <td class="text-right">
-                          <input type="text" name="thesis_titleKeyword" class="form-control">
-                        </td>
-                        <td class="text-right">
-                          <input type="submit" name="search" value="Search" class="btn btn-default btn-flat">
-                        </td>
-                    </tr>
-                </table>
-              </form>
-            </div>
-        </div>
       </div>
     </section>
 
 
     <!-- Main content -->
-    <section class="content container-fluid">
-      <table class="table table-bordered" style="width:100%;">
-              <tr style="font-size: 18px;">
-                <th>Thesis Title</th>
-                <th>Year Accomplished</th>
-                <th>Action</th>
-              </tr>
-
-              <?php
-
-                while($rowTheses = mysqli_fetch_array($queryThesesResult))
-                {
-                  $i = 1;
-              ?>
-
+     <div class="box-body">
+     <table class="table table-bordered">
               <tr>
-                <td><?php echo $rowTheses['thesis_title']; ?></td>
-                <td><?php echo $rowTheses['year_accomplished']; ?></td>
-              <!--
-                Ang mga button sa ibaba ay isama sa loob ng loop kapag nag-retrieve na ng records galing database
-              -->
+                <th colspan="4"><center><h3>Thesis Details</h3></center></th>
+              </tr>
+              <tr>
+                <td rowspan="5" align="center"><img src="data:image/jpeg;base64,<?php echo base64_encode($rowThesisAbstract['image']) ?>" height="400" width="300">
+                </td>
+                <th>Title:</th>
                 <td>
-                  <a href="faculty_viewThesis_doctorate.php?thesis_id=<?php echo $rowTheses['thesis_id']?>" class="btn btn-sm btn-success">View</a>
-               </td>
-               <?php
-                $i++;
-                }
-               ?>
+                  <?php echo $rowThesis['thesis_title']; ?>
+                </td>
+              </tr>
+              <tr>
+                <th>
+                  Year Accomplished:
+                </th>
+                <td>
+                   <?php echo $rowThesis['year_accomplished']?>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <b>Authors:</b>
+                  <br>
+                  <?php
+                    while($rowThesisAuthor = mysqli_fetch_assoc($queryThesisAuthorResult))
+                    {
+                      echo "<br>".$rowThesisAuthor['last_name'].", ".$rowThesisAuthor['first_name']." ".$rowThesisAuthor['middle_initial'].".";
+                    }
+                  ?>
+                </td>
+                <td>
+                  <b>Evaluators:</b>
+                  <br>
+                  <?php
+                  while($rowThesisEvaluators = mysqli_fetch_assoc($queryThesisEvaluatorResult))
+                  {
+                    echo "<br>".$rowThesisEvaluators['last_name'].", ".$rowThesisEvaluators['first_name']." ".$rowThesisEvaluators['middle_initial'].".";
+                  }
+
+                  ?>
+                </td>
+              </tr>
+              <tr>
               </tr>
           </table>
-    </section>
+   </div>
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->

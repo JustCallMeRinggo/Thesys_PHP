@@ -1,6 +1,100 @@
 
 <?php
- require 'dbconnect.php';
+ include('dbconnect.php');
+   if (isset($_POST['addThesis'])) {
+    $thesisFile = $_FILES['add_flThesisFile'];
+    $thesisAbstract = $_FILES['add_flThesisAbstract'];
+
+    $thesisID = $_POST['add_txtThesisID'];
+    $thesisTitle = $_POST['add_txtThesisTitle'];
+    $thesisFileType = $_POST['add_thesisFileType'];
+    $year = $_POST['add_txtYear'];
+
+    if($year < 2017)
+      $thesisStatus = 'ARCHIVED';
+    else
+      $thesisStatus = 'ACTIVE';
+
+    $thesisFileName = $thesisFile['name'];
+    $thesisAbstractName = addslashes(($thesisAbstract['name']));
+    $thesisFileTempName = $thesisFile['tmp_name'];
+    $thesisAbstractTempName = $thesisAbstract['tmp_name'];
+    $thesisAbstractData = addslashes(file_get_contents($thesisAbstractTempName));
+    $thesisFileSize = $thesisFile['size'];
+    $thesisAbstractSize = $thesisAbstract['size'];
+    $thesisFileError =$thesisFile['error'];
+    $thesisAbstractError =$thesisAbstract['error'];
+
+    $thesisFileExt = explode('.', $thesisFileName);
+    $thesisFileActualExt = strtolower(end($thesisFileExt));
+    $thesisAbstractExt = explode('.', $thesisAbstractName);
+    $thesisAbstractActualExt = strtolower(end($thesisAbstractExt));
+
+    $allowedThesisFileExt = array('zip','docx','pdf');
+    $allowedThesisAbstractExt = array('jpg','jpeg','png');
+
+    if((in_array($thesisFileActualExt, $allowedThesisFileExt)) && (in_array($thesisAbstractActualExt, $allowedThesisAbstractExt)))
+    {
+      if ($thesisFileError === 0 && $thesisAbstractError ===0) 
+      {
+        if ($thesisFileSize < 100000000 && $thesisAbstractSize < 100000000)
+        {
+          $newThesisFileName = $thesisID."file.".$thesisFileActualExt;
+          $thesisFileDestination = 'uploads/'.$newThesisFileName;
+          $queryUploadFile = "INSERT INTO tblThesis(thesis_id, thesis_title, year_accomplished, file, file_type,status ) VALUES (upper('$thesisID'),'$thesisTitle', $year, '$thesisFileDestination', '$thesisFileType', '$thesisStatus')";
+          $uploadFileResult = mysqli_query($conn,$queryUploadFile);
+          move_uploaded_file($thesisFileTempName, $thesisFileDestination);
+
+          
+          $queryUploadThesisAbstract = "INSERT INTO tblThesis_abstract(thesis_id, image) VALUES(upper('$thesisID'),'$thesisAbstractData')";
+          $uploadThesisAbstractResult = mysqli_query($conn, $queryUploadThesisAbstract);
+          header('location: admin_thesis_masteral.php');
+        }
+        else{
+        ?>
+        <script type="text/javascript">
+          alert('Your File is Too Big!');
+
+        </script>
+      <?php
+      echo"<script>location.assign('admin_thesis_masteral.php')</script>";
+        }
+
+      }
+      else {
+        ?>
+        <script type="text/javascript">
+          alert('You Have an Error!');
+
+        </script>
+      <?php
+      echo"<script>location.assign('admin_thesis_masteral.php')</script>";
+      }
+    }
+    else{
+      ?>
+        <script type="text/javascript">
+          alert('Invalid File Extension!');
+
+        </script>
+      <?php
+      echo"<script>location.assign('admin_thesis_masteral.php')</script>";
+    }
+  }
+  elseif(isset($_POST['search']))
+    {
+  
+      $keyword = $_POST['thesis_titleKeyword'];
+      $queryTheses = "SELECT * FROM tblThesis WHERE thesis_title LIKE('%$keyword%') AND status LIKE('ACTIVE')";
+      $queryThesesResult = mysqli_query($conn, $queryTheses);
+
+    }
+  else
+  {
+      $queryTheses = "SELECT * FROM tblThesis WHERE status LIKE('ACTIVE')";
+      $queryThesesResult = mysqli_query($conn, $queryTheses);
+    }
+
   session_start();
 
   $userID = $_SESSION['user_id'];
@@ -21,9 +115,9 @@
 
   //preparation of session ID for next landing page
 
-  $_SESSION['user_id'] = $userID;
-
+  //$_SESSION['user_id'] = $userID;
 ?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -176,19 +270,146 @@
         <small>Masteral</small>
       </h1>
       <ol class="breadcrumb">
-        <li><i class="fa fa-dashboard"></i>Home</li>
-        <li class="active">Theses (Masteral)</li>
+        <li><a href="admin_dashboard.php"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li>Theses (Masteral)</li>
       </ol>
-    </section>
+       <!--ADD ADMIN MODAL-->
+      <div class="modal fade" id="modal_addThesis" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    Add a Thesis
+                </div>
+                <div class="modal-body">
+                <div class="box-body">
+                  <form action="admin_thesis_masteral.php" method="post" enctype="multipart/form-data">
+                    <table class="table table-bordered">
+                        <tr>
+                            <td>Thesis ID</td>
+                            <td> 
+                              <input type="text" name="add_txtThesisID" class="form-control" required="" style="text-transform: uppercase;">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Thesis Title</td>
+                            <td>
+                                <input type="text" name="add_txtThesisTitle" class="form-control" required="">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Thesis File (.pdf/.docx/.zip)</td>
+                            <td>
+                              <input type="file" name="add_flThesisFile" required="">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Thesis File Type</td>
+                            <td>
+                              <select name="add_thesisFileType">
+                                <option>Original Copy</option>
+                                <option>Scanned</option>
+                              </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Year Accomplished:</td>
+                            <td>
+                                <input type="text" name="add_txtYear" class="form-control" required="">
+                            </td>
+                        </tr>
+                        <tr>
+                          <td>Thesis Abstract (.jpg/.jpeg/.png)</td>
+                          <td><input type="file" name="add_flThesisAbstract" required=""></td>
+                        </tr>
+                    </table>
+                </div>
+                </div>
+                <div class="modal-footer">
+                  <input type="submit" name="addThesis" value="Add Thesis Record" class=" btn sbtn-success"> 
+                </form>
+                </div>
+            </div>
+        </div>
+      </div>
+    <!--END ADD ADMIN MODAL-->
+    <div class="row">
+        <div class="col-lg-9">
 
+        </div>
+        <div class="col-lg-3 text-right">
+                <table style="width:100%;">
+                    <tr>
+                      <td class="text-right" valign="center">
+                         Status: &nbsp;
+                      </td>
+                        <td class="text-right">
+                            <select name="ddlStatus">
+                              <option selected="selected">Active</option>
+                              <option>Archived</option>
+                            </select>
+                        </td>
+                        <td class="text-right">
+                            &nbsp;
+                            &nbsp;
+                            &nbsp;
+                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal_addThesis">Add Thesis</button>
+                        </td>
+                    </tr>
+                </table>
+        </div>
+    </div>
+    <div class="col-lg-6">
+      
+    </div>
+    <div class="col-lg-6 text-right">
+      <br>
+            <form action="admin_thesis_masteral.php" method="post">
+                <table style="width:100%;">
+                    <tr>
+                      <td class="text-right" valign="center" class="form-control">
+                         <font style="font-family: sans-serif;">Search Thesis Title</font>&nbsp;&nbsp;
+                      </td>
+                        <td class="text-right">
+                          <input type="text" name="thesis_titleKeyword" class="form-control">
+                        </td>
+                        <td class="text-right">
+                          <input type="submit" name="search" value="Search" class="btn btn-default btn-flat">
+                        </td>
+                    </tr>
+                </table>
+              </form>
+        </div>
+    </section>
     <!-- Main content -->
-    <section class="content container-fluid">
+   <div class="box-body">
+      <table class="table table-bordered" style="width:100%;">
+              <tr>
+                <th>Thesis ID</th>
+                <th>Thesis Title</th>
+                <th>Year Accomplished</th>
+                <th colspan="3">Actions</th>
+              </tr>
 
-      <!--------------------------
-        | Your Page Content Here |
-        -------------------------->
+              <?php
+                
+                while($rowTheses = mysqli_fetch_array($queryThesesResult))
+                {
+              ?>
 
-    </section>
+              <tr>
+                <td><?php echo $rowTheses['thesis_id']; ?></td>
+                <td><?php echo $rowTheses['thesis_title']; ?></td>
+                <td><?php echo $rowTheses['year_accomplished']; ?></td>
+                <td>
+                  <a href="admin_editThesis_masteral.php?thesis_id=<?php echo $rowTheses['thesis_id'];?>" class="btn btn-sm btn-warning">Edit</a>
+                  <a href="admin_archiveThesis_masteral.php?thesis_id=<?php echo $rowTheses['thesis_id'];?>" class="btn btn-sm btn-danger">Archive</a>
+                  <a href="admin_viewThesis_masteral.php?thesis_id=<?php echo $rowTheses['thesis_id'];?>" class="btn btn-sm btn-success">View</a>
+               </td>
+               <?php
+                }
+               ?>
+              </tr>
+          </table>
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->

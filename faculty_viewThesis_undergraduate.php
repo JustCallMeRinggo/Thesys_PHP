@@ -151,7 +151,7 @@
           <ul class="treeview-menu">
             <li class="active"><a href="faculty_thesis_undergraduate.php"><i class="fa fa-graduation-cap"></i> Undergraduate</a></li>
             <li><a href="faculty_thesis_masteral.php"><i class="fa fa-industry"></i> Masteral</a></li>
-            <li><a href="faculty_thesis_doctorate..php"><i class="fa fa-institution"></i> Doctorate</a></li>
+            <li><a href="faculty_thesis_doctorate.php"><i class="fa fa-institution"></i> Doctorate</a></li>
           </ul>
 
           <li><a href="faculty_requests.php"><i class="fa fa-th"></i> <span>Requests</span></a></li>
