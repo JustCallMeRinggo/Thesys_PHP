@@ -22,9 +22,13 @@
     $evaluatorFirstName = $_POST['add_txtEvaluatorFirstName'];
     $evaluatorMiddleInitial = $_POST['add_txtEvaluatorMiddleInitial'];
 
-    $queryAddEvaluator = "INSERT INTO tblEvaluators(evaluator_id,thesis_id, last_name, first_name, middle_initial)
-                             VALUES('$evaluatorID', '$thesisID', '$evaluatorLastName', '$evaluatorFirstName', '$evaluatorMiddleInitial')";
+    $queryAddEvaluator = "INSERT INTO tblEvaluators(evaluator_id, last_name, first_name, middle_initial)
+                             VALUES('$evaluatorID', '$evaluatorLastName', '$evaluatorFirstName', '$evaluatorMiddleInitial')";
     $queryAddEvaluatorResult = mysqli_query($conn, $queryAddEvaluator);
+
+    $queryAddThesisEvaluator = "INSERT INTO tblThesis_Evaluators(evaluator_id, thesis_id)
+                                VALUES('$evaluatorID','$thesisID')";
+    $queryAddThesisEvaluatorResult = mysqli_query($conn, $queryAddThesisEvaluator);
 
 
     header('location: admin_viewThesis_undergraduate.php?thesis_id='.$thesisID.'');
@@ -41,7 +45,7 @@
    $queryThesisAuthor = "SELECT * FROM tblProponents WHERE thesis_id='$thesisID'";
    $queryThesisAuthorResult = mysqli_query($conn, $queryThesisAuthor);
 
-   $queryThesisEvaluator = "SELECT * FROM tblEvaluators WHERE thesis_id = '$thesisID'";
+   $queryThesisEvaluator = "SELECT * FROM tblThesis_Evaluators WHERE thesis_id = '$thesisID'";
    $queryThesisEvaluatorResult = mysqli_query($conn, $queryThesisEvaluator);
 
   session_start();
@@ -232,7 +236,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    Add a Thesis
+                    Add a Thesis Author
                 </div>
                 <div class="modal-body">
                 <div class="box-body">
@@ -241,7 +245,7 @@
                         <tr>
                             <td>Thesis ID</td>
                             <td> 
-                              <input type="text" name="add_txtThesisID" class="form-control" value="<?php echo $rowThesis['thesis_id']?>">
+                              <input type="text" name="add_txtThesisID" class="form-control" value="<?php echo $rowThesis['thesis_id']?>" readonly="readonly">
                             </td>
                         </tr>
                         <tr>
@@ -287,14 +291,14 @@
                         <tr>
                             <td>Thesis ID</td>
                             <td> 
-                              <input type="text" name="add_txtThesisID" class="form-control" value="<?php echo $rowThesis['thesis_id']?>">
+                              <input type="text" name="add_txtThesisID" class="form-control" value="<?php echo $rowThesis['thesis_id']?>" readonly="readonly">
                             </td>
                         </tr>
                         <tr>
                         <tr>
                             <td>Evaluator ID</td>
                             <td> 
-                              <input type="text" name="add_txtEvaluatorID" class="form-control" value="<?php echo $Guid?>">
+                              <input type="text" name="add_txtEvaluatorID" class="form-control" value="<?php echo $Guid?>" readonly="readonly">
                             </td>
                         </tr>
                         <tr>
@@ -387,10 +391,18 @@
                 <td>
                   Evaluators:
                   <br>
+                  <br>
                   <?php
                   while($rowThesisEvaluators = mysqli_fetch_assoc($queryThesisEvaluatorResult))
                   {
-                    echo "<br>".$rowThesisEvaluators['last_name'].", ".$rowThesisEvaluators['first_name']." ".$rowThesisEvaluators['middle_initial'].".";
+
+                    $queryEvalutors = "SELECT * FROM tblEvaluators WHERE evaluator_id = '".$rowThesisEvaluators['evaluator_id']."'";
+                    $queryEvaluatorsResult = mysqli_query($conn, $queryEvalutors);
+
+                    while($rowEvaluators = mysqli_fetch_assoc($queryEvaluatorsResult))
+                    {
+                      echo $rowEvaluators['first_name']." ".$rowEvaluators['middle_initial'].". ".$rowEvaluators['last_name']."<br>";
+                    }
                   }
 
                   ?>

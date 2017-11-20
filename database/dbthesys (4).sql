@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 20, 2017 at 12:39 AM
+-- Generation Time: Nov 20, 2017 at 01:18 AM
 -- Server version: 10.1.28-MariaDB
 -- PHP Version: 7.1.10
 
@@ -87,7 +87,8 @@ CREATE TABLE `tblevaluators` (
 
 INSERT INTO `tblevaluators` (`evaluator_id`, `thesis_id`, `last_name`, `first_name`, `middle_initial`) VALUES
 ('E04D7835', 'SMP123', 'Mangaba', 'Joel', 'B'),
-('E46754AF', 'SMP123', 'Dasig', 'Daniel', 'D');
+('E46754AF', 'SMP123', 'Dasig', 'Daniel', 'D'),
+('ECFF677E', '', 'Congzon', 'Janice Pola', 'D');
 
 -- --------------------------------------------------------
 
@@ -257,7 +258,8 @@ CREATE TABLE `tblthesis_evaluators` (
 
 INSERT INTO `tblthesis_evaluators` (`id`, `evaluator_id`, `thesis_id`) VALUES
 (3, 'E04D7835', 'SMP123'),
-(4, 'E46754AF', 'SMP123');
+(4, 'E46754AF', 'SMP123'),
+(5, 'ECFF677E', 'SMP123');
 
 -- --------------------------------------------------------
 
@@ -502,7 +504,7 @@ ALTER TABLE `tblthesis_category`
 -- AUTO_INCREMENT for table `tblthesis_evaluators`
 --
 ALTER TABLE `tblthesis_evaluators`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Constraints for dumped tables
