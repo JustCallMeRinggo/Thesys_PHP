@@ -189,8 +189,8 @@ function alphaOnly(e) {
         </div>
         <div class="pull-left info">
           <br>
-           <p style="font-size: 20px;">
-            <?php echo $rowLoggedUser['first_name']; echo " "; echo $rowLoggedUser['last_name'];?>
+           <p>
+            <?php echo $rowLoggedUser['first_name']."<br>".$rowLoggedUser['last_name'];?>
           </p>
         </div>
       </div>
