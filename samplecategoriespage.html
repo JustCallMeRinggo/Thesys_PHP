@@ -1,9 +1,36 @@
+<?php
+  require 'dbconnect.php';
+  session_start();
+
+  $userID = $_SESSION['user_id'];
+
+
+  //checks whether a user account is logged in or not
+  if(!$userID)
+  {
+      header('location: index.html');
+  }
+
+  $queryLoggedUser = "SELECT * FROM tblUsers WHERE user_id = '$userID'";
+  $queryLoggedUserResult = mysqli_query($conn, $queryLoggedUser);
+
+  //fetching of result of queryUserResult
+
+  $rowLoggedUser = mysqli_fetch_assoc($queryLoggedUserResult);
+
+  //preparation of session ID for next landing page
+
+  $_SESSION['user_id'] = $userID;
+
+
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Thesys | Thesis Details Page (Faculty)</title>
+  <title>Thesys | Dashboard (Student)</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -36,7 +63,7 @@
 
   <header class="main-header">
     <!-- Logo -->
-    <a href="faculty_dashboard.php" class="logo">
+    <a href="student_dashboard.php" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><b>T</b>SYS</span>
       <!-- logo for regular state and mobile devices -->
@@ -57,14 +84,14 @@
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
              
               <img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
-              <span class="hidden-xs">TITLE PAGE</span>
+              <span class="hidden-xs">STUDENT</span>
             </a>
             <ul class="dropdown-menu">
               <!-- User image -->
               <li class="user-header">
                 <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
                 <p>
-                  
+                  STUDENT
              </p>
               </li>
               <!-- Menu Body -->
@@ -94,31 +121,28 @@
           <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info">
-          <Br>
-           <p>
-            TITLE
+           <p><br>
+            STUDENT
           </p>
         </div>
       </div>
 
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu" data-widget="tree">
-       <li class="active"><a href="faculty_dashboard.php"><i class="fa fa-th"></i> <span>Dashboard</span></a></li>
+       <li class="active"><a href="student_dashboard.php"><i class="fa fa-th"></i> <span>Dashboard</span></a></li>
         <li class="treeview">
-          
-
           <a href="#"><i class="fa fa-book"></i> <span>Theses</span>
             <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="faculty_thesis_undergraduate.php"><i class="fa fa-graduation-cap"></i> Undergraduate</a></li>
-            <li><a href="faculty_thesis_masteral.php"><i class="fa fa-industry"></i> Masteral</a></li>
-            <li><a href="faculty_thesis_doctorate.php"><i class="fa fa-institution"></i> Doctorate</a></li>
+            <li><a href="student_thesis_undergraduate.php"><i class="fa fa-graduation-cap"></i> Undergraduate</a></li>
+            <li><a href="student_thesis_masteral.php"><i class="fa fa-industry"></i> Masteral</a></li>
+            <li><a href="student_thesis_doctorate.php"><i class="fa fa-institution"></i> Doctorate</a></li>
           </ul>
 
-          <li><a href="faculty_requests.php"><i class="fa fa-th"></i> <span>Requests</span></a></li>
+
         </li>
       </ul>
     </section>
@@ -130,77 +154,105 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Thesis Details
-        <small>Faculty</small>
+        Categories
+        <small>Student</small>
       </h1>
     </section>
 
     <!-- Main content -->
     <section class="content">
-      <!-- Small boxes (Stat box) -->
+      <!-- Main row -->
       <div class="row">
         <div class="col-sm-4">
           <div class="box">
             <div class="box-header">
-              <CENTER><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR>*INSERT IMAGE HERE*<BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR></CENTER>
+              <h3 class="box-title">Categories</h3>
             </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+            <p><a href="#">Library System</a></p>
+             <p><a href="#">Hotel Management System</a></p>
+             <p><a href="#">Ordering System</a></p>
+             <p><a href="#">Parking System</a></p>
+             <p><a href="#">Enrollment System</a></p>
+            </div>
+            <!-- /.box-body -->
           </div>
         </div>
 
         <div class="col-sm-8">
-          <div class="box-body">
-             <dl class="dl-horizontal pull-left">
-                <dt><i class="fa fa-book" style="margin-right: 5%"></i></dt>
-                <dd><p>*Insert Thesis Title*</p></dd>
-                <dt><i class="fa fa-bookmark" style="margin-right: 5%"></i></dt>
-                <dd><p>*Insert Category*</p></dd>
-                <dt><i class="fa fa-users" style="margin-right: 5%"></i></dt>
-                <dd><p>*Insert Author/s*</p></dd>
-                <dt><i class="fa fa-calendar-check-o" style="margin-right: 5%"></i></dt>
-                <dd><p>*Insert Year Accomplished*</p></dd>
-                <dt><i class="fa fa-check-square" style="margin-right: 5%"></i></dt>
-                <dd><p>*Insert Evaluator/s*</p></dd>
-              </dl>
-
-          <div class="row">
-            <div class="box-body">
-              <div class="col-sm-8">
-                <div class="row">
-                  <div class="col-sm-6"><button type="button" class="btn btn-block btn-primary"><i class="fa fa-quote-left"></i></button></div>
-                  <div class="col-sm-6"><button type="button" class="btn btn-block btn-success"><i class="fa fa-download"></i></button></div>
-                </div>               
-              </div>
-              
-              <div class="col-sm-4">
-                
-              </div>
-            </div>
-          </div>
-                 
-          </div>
-
-        <div class="row">
-          <div class="box-body">
+          <div class="box">
             <div class="box-header">
-              <div class="col-sm-3"><br><br><br><br><br><br><a href="#">Title of thesis</a></div>
-              <div class="col-sm-3"><br><br><br><br><br><br><a href="#">Title of thesis</a></div>
-              <div class="col-sm-3"><br><br><br><br><br><br><a href="#">Title of thesis</a></div>
-              <div class="col-sm-3"><br><br><br><br><br><br><a href="#">Title of thesis</a></div>
-            </div>            
+              <div class="form-group">
+                <div class="input-group margin">
+                <div class="input-group-btn">
+                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Search for
+                    <span class="fa fa-caret-down" style="width: 30%"></span></button>
+                  <ul class="dropdown-menu">
+                    <li><a href="#">Action</a></li>
+                    <li><a href="#">Another action</a></li>
+                    <li><a href="#">Something else here</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#">Separated link</a></li>
+                  </ul>
+                </div>
+                <!-- /btn-group -->
+                <input type="text" class="form-control" placeholder="Search" style="width: 84%">
+                <button type="button" class="btn btn-primary" btn-sm style="margin-left: 1%"><i class="fa fa-search"><a href="#"></a></i></button>
+                <button type="button" class="btn btn-primary" style="margin-left: 1%"><i class="fa fa-close"><a href="#"></a></i></button>
+                </div>
+              </div>
+              <h4>Search Result/s:</h4>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <a href="#"><h4>DEVELOPMENT OF THESYS</h4></a>
+              <i class="fa fa-users"> CABUSORA, CASTILLO, PILAPIL</i><BR>
+              <i class="fa fa-calendar"> NOVEMBER 2017</i>
+            </div>
+
+            <div class="box-body">
+              <a href="#"><h4>DEVELOPMENT OF THESYS</h4></a>
+              <i class="fa fa-users"> CABUSORA, CASTILLO, PILAPIL</i><BR>
+              <i class="fa fa-calendar"> NOVEMBER 2017</i>
+            </div>
+
+            <div class="box-body">
+              <a href="#"><h4>DEVELOPMENT OF THESYS</h4></a>
+              <i class="fa fa-users"> CABUSORA, CASTILLO, PILAPIL</i><BR>
+              <i class="fa fa-calendar"> NOVEMBER 2017</i>
+            </div>
+
+            <div class="box-body">
+              <a href="#"><h4>DEVELOPMENT OF THESYS</h4></a>
+              <i class="fa fa-users"> CABUSORA, CASTILLO, PILAPIL</i><BR>
+              <i class="fa fa-calendar"> NOVEMBER 2017</i>              
+            </div>
+            
+            <div class="box-body">
+              <a href="#"><h4>DEVELOPMENT OF THESYS</h4></a>
+              <i class="fa fa-users"> CABUSORA, CASTILLO, PILAPIL</i><BR>
+              <i class="fa fa-calendar"> NOVEMBER 2017</i>              
+            </div>
+
+            <!-- /.box-body -->
           </div>
-        </div>
+
+          <ul class="pagination pagination-sm no-margin pull-right">
+                  <li><a href="#">&laquo;</a></li>
+                  <li><a href="#">1</a></li>
+                  <li><a href="#">2</a></li>
+                  <li><a href="#">3</a></li>
+                  <li><a href="#">&raquo;</a></li>
+          </ul>
 
         </div>
+        </div>
+
       </div>
-    </div> 
-      <!-- /.row (main row) -->
-
     </section>
-    <!-- /.content -->
   </div>
-</div>
-<!-- ./wrapper -->
-
+  <!-- /.content-wrapper -->
 <!-- jQuery 3 -->
 <script src="bower_components/jquery/dist/jquery.min.js"></script>
 <!-- jQuery UI 1.11.4 -->
